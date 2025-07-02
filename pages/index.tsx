@@ -19,15 +19,15 @@ export default function Home() {
   if (!selected) return <p className="text-white p-4">Loading...</p>;
 
   return (
-    <main className="bg-gray-950 min-h-screen text-white">
-      <Header />
-      <HeroBanner movie={selected} />
-      <h2 className="text-xl font-bold mt-6 px-4">More Movies</h2>
-      <MovieCarousel
-        movies={movies}
-        onSelect={setSelected}
-        selectedId={selected.id}
-      />
+    <main className="min-h-screen bg-gray-950 text-white">
+      <HeroBanner movie={selected}>
+        <Header />
+        <MovieCarousel
+          movies={movies}
+          onSelect={setSelected}
+          selectedId={selected.id}
+        />
+      </HeroBanner>
     </main>
   );
 }
