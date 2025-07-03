@@ -1,5 +1,6 @@
 import { useEffect, useState, ReactNode } from 'react';
 import { Movie } from '../lib/types';
+import MovieModal from './MovieModal';
 
 export default function HeroBanner({
   movie,
@@ -9,6 +10,7 @@ export default function HeroBanner({
   children?: ReactNode[];
 }) {
   const [backgroundUrl, setBackgroundUrl] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     async function fetchBackground() {
@@ -41,7 +43,7 @@ export default function HeroBanner({
 
   return (
     <section
-      className="relative text-white h-[100vh] flex flex-col justify-between bg-cover bg-center px-8 py-6"
+      className="relative text-white h-[90vh] flex flex-col justify-between bg-cover bg-center px-8 py-6"
       style={{
         backgroundImage: `url("${backgroundUrl || `http://localhost:3001/images/${movie.img}`}")`,
       }}
@@ -51,7 +53,7 @@ export default function HeroBanner({
       <div className="relative z-10 flex flex-col h-full">
         <div>{children && Array.isArray(children) && children[0]}</div>
 
-        <div className="flex-1 flex items-center">
+        <div className="flex-1 flex lg:-mt-32 items-center">
           <div className="max-w-2xl w-full">
             <h1 className="text-5xl font-bold">{movie.name}</h1>
             <p className="mt-2 text-lg text-gray-300">
@@ -74,14 +76,21 @@ export default function HeroBanner({
             </p>
             <div className="mt-6 flex gap-4">
               <button className="bg-teal-500 px-5 py-2 rounded text-white font-semibold">▶ Play</button>
-              <button className="bg-teal-700 px-5 py-2 rounded text-white font-semibold">＋ Add</button>
+              <button
+                className="bg-gray-700 px-5 py-2 rounded text-white font-semibold"
+                onClick={() => setShowModal(true)}
+              >
+                More Info
+              </button>
             </div>
           </div>
         </div>
-
-        {/* Carousel (opcional) */}
-        <div className="w-full mt-4">{children && Array.isArray(children) && children[1]}</div>
       </div>
+
+      {/* Modal de detalhes */}
+      {showModal && (
+        <MovieModal movie={movie} onClose={() => setShowModal(false)} />
+      )}
     </section>
   );
 }

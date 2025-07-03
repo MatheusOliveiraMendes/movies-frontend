@@ -9,6 +9,8 @@ export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [selected, setSelected] = useState<Movie | null>(null);
 
+  
+
   useEffect(() => {
     fetchMovies().then((data) => {
       setMovies(data);
@@ -20,14 +22,15 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-950 text-white">
-      <HeroBanner movie={selected}>
-        <Header />
+        <HeroBanner movie={selected}>
+          {[<Header key="header" />]}
+        </HeroBanner>
         <MovieCarousel
           movies={movies}
           onSelect={setSelected}
           selectedId={selected.id}
         />
-      </HeroBanner>
-    </main>
+     
+      </main>
   );
 }
