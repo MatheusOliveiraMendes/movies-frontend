@@ -1,43 +1,97 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Header() {
-  const [active, setActive] = useState('Tv Shows');
+  const [active, setActive] = useState('Movies');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const router = useRouter();
+
+  const navItems = ['Movies', 'Series', 'Tv Shows'];
 
   return (
-    <header className="flex flex-wrap justify-between items-center px-6 py-4 w-full text-white">
-      {/* Logo */}
-      <div className="text-2xl font-bold w-full sm:w-auto text-center sm:text-left mb-2 sm:mb-0">
-        <span className="text-teal-400">Movies</span>
-      </div>
+    <header className="text-white px-4 md:px-8 py-4 relative z-20">
+      <div className="flex justify-between items-center">
+        {/* Logo */}
+        <div className="text-2xl font-bold text-teal-400">Movies</div>
 
-      {/* Nav Links */}
-      <nav className="flex flex-wrap justify-center gap-4 text-sm w-full sm:w-auto">
-        {['Home', 'Tv Shows', 'Movies', 'Series'].map((item) => (
+        {/* Desktop nav */}
+        <nav className="hidden md:flex gap-6 text-sm">
+          {navItems.map((item) => (
+            <button
+              key={item}
+              className={`hover:text-teal-400 transition ${
+                active === item ? 'text-teal-400 font-semibold' : 'text-white'
+              }`}
+              onClick={() => setActive(item)}
+            >
+              {item}
+            </button>
+          ))}
+        </nav>
+
+        {/* Icons */}
+        <div className="flex items-center gap-4">
+          {/* Search Icon */}
           <button
-            key={item}
-            className={`hover:text-teal-400 transition ${
-              active === item ? 'text-teal-400 font-semibold' : 'text-white'
-            }`}
-            onClick={() => setActive(item)}
+            onClick={() => router.push('/search')}
+            className="text-xl cursor-pointer hover:text-teal-400"
+            aria-label="Search"
           >
-            {item}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <circle
+                cx="11"
+                cy="11"
+                r="8"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <line
+                x1="21"
+                y1="21"
+                x2="16.65"
+                y2="16.65"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
           </button>
-        ))}
-      </nav>
 
-      {/* Search Icon */}
-      <div className="hidden sm:block text-xl cursor-pointer hover:text-teal-400 w-full sm:w-auto text-center sm:text-right mt-2 sm:mt-0">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 inline"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2" fill="none" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden text-2xl hover:text-teal-400"
+          >
+            ☰
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden mt-4 flex flex-col items-center gap-4">
+          {navItems.map((item) => (
+            <button
+              key={item}
+              className={`text-center hover:text-teal-400 ${
+                active === item ? 'text-teal-400 font-semibold' : 'text-white'
+              }`}
+              onClick={() => {
+                setActive(item);
+                setMenuOpen(false);
+              }}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      )}
     </header>
   );
 }

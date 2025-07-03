@@ -1,47 +1,69 @@
+import { useRef } from 'react';
 import { Movie } from '../lib/types';
 
 export default function MovieCarousel({
   movies,
   onSelect,
-  selectedId
+  selectedId,
 }: {
   movies: Movie[];
   onSelect: (movie: Movie) => void;
   selectedId: number;
 }) {
-  return (
-    <div className="overflow-x-auto hide-scrollbar">
-      <div className="flex gap-4 w-max px-4 pb-6">
-        {movies.map((movie) => {
-          const isSelected = movie.id === selectedId;
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-          return (
+  const scroll = (offset: number) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <section className="relative z-10 lg:-mt-48 px-4 sm:px-6">
+
+
+      <h2 className="text-2xl font-bold m-8">Highlights</h2>
+
+      <button
+        onClick={() => scroll(-300)}
+        className="hidden sm:flex items-center justify-center absolute left-0 top-16 h-48 w-10 bg-black/50 text-white rounded-r z-20"
+      >
+        &#8249;
+      </button>
+      <button
+        onClick={() => scroll(300)}
+        className="hidden sm:flex items-center justify-center absolute right-0 top-16 h-48 w-10 bg-black/50 text-white rounded-l z-20"
+      >
+        &#8250;
+      </button>
+
+      <div className="overflow-x-auto pb-2 scrollbar-hide" ref={scrollRef}>
+        <div className="flex gap-4 w-max">
+          {movies.map((movie) => (
             <div
               key={movie.id}
-              className="w-32 cursor-pointer group"
+              className="w-32 flex-shrink-0 cursor-pointer group transition-transform duration-300"
               onClick={() => onSelect(movie)}
             >
               <img
                 src={`http://localhost:3001/images/${movie.img}`}
                 alt={movie.name}
-                loading="lazy"
-                className={`w-full h-48 object-cover rounded transition-transform duration-300
-                  ${isSelected ? 'scale-110' : 'scale-100 group-hover:scale-110'}
-                `}
+                className={`w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 
+                  ${movie.id === selectedId ? 'scale-110' : 'group-hover:scale-95'}`}
               />
               <p
-                className={`text-center mt-3 text-sm transition-colors duration-200 ${
-                  isSelected
-                    ? 'text-gray-200 font-semibold'
-                    : 'text-white group-hover:text-white'
+                className={`text-center mt-3 text-sm ${
+                  movie.id === selectedId
+                    ? 'text-white font-semibold'
+                    : 'text-gray-400'
                 }`}
               >
                 {movie.name}
               </p>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
