@@ -32,14 +32,12 @@ export default function MovieModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
       <div className="bg-[#1e1e1e] rounded-lg overflow-hidden max-w-3xl w-full relative text-white shadow-2xl">
 
-        {/* Imagem do banner */}
         <div className="h-56 md:h-72 bg-cover bg-center"
           style={{
             backgroundImage: `url(${bannerUrl || `https://movies-backend-093v.onrender.com/images/${movie.img}`})`,
           }}
         />
 
-        {/* Botão de fechar - fora da imagem */}
         <button
           className="absolute top-4 right-4 text-white bg-black/60 hover:bg-black/80 rounded-full w-9 h-9 flex items-center justify-center z-20"
           onClick={onClose}
@@ -47,7 +45,6 @@ export default function MovieModal({
           ✕
         </button>
 
-        {/* Conteúdo */}
         <div className="p-6">
           <h2 className="text-3xl font-bold mb-2">{movie.name}</h2>
           <p className="text-sm text-gray-400 mb-4">{movie.genres.join(', ')}</p>

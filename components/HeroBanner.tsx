@@ -87,7 +87,6 @@ export default function HeroBanner({
         </div>
       </div>
 
-      {/* Modal de detalhes */}
       {showModal && (
         <MovieModal movie={movie} onClose={() => setShowModal(false)} />
       )}
