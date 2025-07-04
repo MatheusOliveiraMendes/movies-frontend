@@ -94,7 +94,7 @@ export default function SearchPage() {
                         onClick={() => router.push(`/movie/${movie.id}`)}
                     >
                         <img
-                            src={`http://localhost:3001/images/${movie.img}`}
+                            src={`https://movies-backend-093v.onrender.com/images/${movie.img}`}
                             alt={movie.name}
                             className="w-full h-48 object-cover rounded mb-2"
                         />

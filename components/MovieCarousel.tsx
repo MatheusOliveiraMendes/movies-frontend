@@ -46,7 +46,7 @@ export default function MovieCarousel({
               onClick={() => onSelect(movie)}
             >
               <img
-                src={`http://localhost:3001/images/${movie.img}`}
+                src={`https://movies-backend-093v.onrender.com/images/${movie.img}`}
                 alt={movie.name}
                 className={`w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-300 
                   ${movie.id === selectedId ? 'scale-110' : 'group-hover:scale-95'}`}
