@@ -35,7 +35,7 @@ export default function MovieModal({
         {/* Imagem do banner */}
         <div className="h-56 md:h-72 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${bannerUrl || `http://localhost:3001/images/${movie.img}`})`,
+            backgroundImage: `url(${bannerUrl || `https://movies-backend-093v.onrender.com/images/${movie.img}`})`,
           }}
         />
 

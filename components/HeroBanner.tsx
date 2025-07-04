@@ -45,7 +45,7 @@ export default function HeroBanner({
     <section
       className="relative text-white h-[90vh] flex flex-col justify-between bg-cover bg-center px-8 py-6"
       style={{
-        backgroundImage: `url("${backgroundUrl || `http://localhost:3001/images/${movie.img}`}")`,
+        backgroundImage: `url("${backgroundUrl || `https://movies-backend-093v.onrender.com/images/${movie.img}`}")`,
       }}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-black/100 via-black/60 to-transparent z-0" />

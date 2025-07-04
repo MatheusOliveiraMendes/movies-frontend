@@ -37,7 +37,7 @@ export default function MovieDetail() {
     <main
       className="relative min-h-screen text-white bg-cover bg-center"
       style={{
-        backgroundImage: `url("${backgroundUrl || `http://localhost:3001/images/${movie.img}`}")`,
+        backgroundImage: `url("${backgroundUrl || `https://movies-backend-093v.onrender.com/images/${movie.img}`}")`,
       }}
     >
       {/* Overlay escura */}
@@ -62,7 +62,7 @@ export default function MovieDetail() {
         </div>
 
         <img
-          src={`http://localhost:3001/images/${movie.img}`}
+          src={`https://movies-backend-093v.onrender.com/images/${movie.img}`}
           alt={movie.name}
           className="mt-6 rounded-lg max-w-xs shadow-xl"
         />
