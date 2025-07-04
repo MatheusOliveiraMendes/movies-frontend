@@ -11,17 +11,14 @@ export default function Header() {
   return (
     <header className="text-white px-4 md:px-8 py-4 relative z-20">
       <div className="flex justify-between items-center">
-        {/* Logo */}
         <div className="text-2xl font-bold text-teal-400">Movies</div>
 
-        {/* Desktop nav */}
         <nav className="hidden md:flex gap-6 text-sm">
           {navItems.map((item) => (
             <button
               key={item}
-              className={`hover:text-teal-400 transition ${
-                active === item ? 'text-teal-400 font-semibold' : 'text-white'
-              }`}
+              className={`hover:text-teal-400 transition ${active === item ? 'text-teal-400 font-semibold' : 'text-white'
+                }`}
               onClick={() => setActive(item)}
             >
               {item}
@@ -29,9 +26,7 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Icons */}
         <div className="flex items-center gap-4">
-          {/* Search Icon */}
           <button
             onClick={() => router.push('/search')}
             className="text-xl cursor-pointer hover:text-teal-400"
@@ -63,7 +58,6 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden text-2xl hover:text-teal-400"
@@ -73,15 +67,13 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden mt-4 flex flex-col items-center gap-4">
           {navItems.map((item) => (
             <button
               key={item}
-              className={`text-center hover:text-teal-400 ${
-                active === item ? 'text-teal-400 font-semibold' : 'text-white'
-              }`}
+              className={`text-center hover:text-teal-400 ${active === item ? 'text-teal-400 font-semibold' : 'text-white'
+                }`}
               onClick={() => {
                 setActive(item);
                 setMenuOpen(false);

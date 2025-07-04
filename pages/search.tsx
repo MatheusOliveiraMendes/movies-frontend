@@ -60,7 +60,6 @@ export default function SearchPage() {
             )}
             <h1 className="text-2xl font-bold mb-4">Search & Filter Movies</h1>
 
-            {/* Search bar */}
             <input
                 type="text"
                 placeholder="Search movie..."
@@ -69,15 +68,14 @@ export default function SearchPage() {
                 className="w-full max-w-md bg-gray-800 px-4 py-2 rounded focus:outline-none mb-4"
             />
 
-            {/* Genre Filter */}
             <div className="flex flex-wrap gap-2 mb-6">
                 {genres.map((genre) => (
                     <button
                         key={genre}
                         className={`px-4 py-1 rounded-full border text-sm transition
       ${selectedGenre === genre
-                            ? 'bg-teal-500 text-white border-teal-500'
-                            : 'text-gray-300 border-gray-600 hover:bg-gray-800'}`}
+                                ? 'bg-teal-500 text-white border-teal-500'
+                                : 'text-gray-300 border-gray-600 hover:bg-gray-800'}`}
                         onClick={() => setSelectedGenre(genre)}
                     >
                         {genre.charAt(0).toUpperCase() + genre.slice(1)}
@@ -85,13 +83,12 @@ export default function SearchPage() {
                 ))}
             </div>
 
-            {/* Movie List */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
                 {filtered.map((movie) => (
                     <div
                         key={movie.id}
                         className="cursor-pointer hover:scale-105 transition-transform"
-                        onClick={() => router.push(`/movie/${movie.id}`)}
+                        onClick={() => router.push(`/movies/${movie.id}`)}
                     >
                         <img
                             src={`https://movies-backend-093v.onrender.com/images/${movie.img}`}

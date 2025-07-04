@@ -15,7 +15,6 @@ export default function MovieDetail() {
       const data = await fetchMovieById(Number(id));
       setMovie(data);
 
-      // Busca da imagem no TMDb
       const tmdbRes = await fetch(
         `https://api.themoviedb.org/3/search/movie?api_key=08e35b932690010e03e30fe284d07672&query=${encodeURIComponent(data.name)}`
       );
@@ -40,7 +39,6 @@ export default function MovieDetail() {
         backgroundImage: `url("${backgroundUrl || `https://movies-backend-093v.onrender.com/images/${movie.img}`}")`,
       }}
     >
-      {/* Overlay escura */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 z-0" />
 
       <div className="relative z-10 p-6 max-w-4xl mx-auto flex flex-col gap-4">
@@ -48,7 +46,7 @@ export default function MovieDetail() {
           onClick={() => router.back()}
           className="text-teal-400 text-sm hover:underline w-fit"
         >
-          ← Back 
+          ← Back
         </button>
 
         <h1 className="text-4xl font-bold">{movie.name}</h1>

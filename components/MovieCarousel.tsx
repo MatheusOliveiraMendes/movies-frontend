@@ -52,11 +52,10 @@ export default function MovieCarousel({
                   ${movie.id === selectedId ? 'scale-110' : 'group-hover:scale-95'}`}
               />
               <p
-                className={`text-center mt-3 text-sm ${
-                  movie.id === selectedId
+                className={`text-center mt-3 text-sm ${movie.id === selectedId
                     ? 'text-white font-semibold'
                     : 'text-gray-400'
-                }`}
+                  }`}
               >
                 {movie.name}
               </p>
