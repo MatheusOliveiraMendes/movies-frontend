@@ -14,6 +14,7 @@ Deployed on **Netlify**, consuming an API hosted on **Render**.
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Netlify](https://www.netlify.com/) (frontend hosting)
 - [Render](https://render.com/) (backend hosting)
+- [CypressL](https://www.cypress.io)(Test)
 
 ---
 
@@ -78,6 +79,8 @@ http://localhost:3000
 - **Frontend**: [Netlify](https://www.netlify.com/)
 - **Backend API**: [Render](https://render.com/)
 - **Database**: [Neon PostgreSQL](https://neon.tech/)
+- **Cypress**: [CypressL](https://www.cypress.io)
+
 
 ---
 
