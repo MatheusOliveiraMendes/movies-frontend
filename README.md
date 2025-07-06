@@ -14,7 +14,7 @@ Deployed on **Netlify**, consuming an API hosted on **Render**.
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Netlify](https://www.netlify.com/) (frontend hosting)
 - [Render](https://render.com/) (backend hosting)
-- [CypressL](https://www.cypress.io)(Test)
+- [Cypres](https://www.cypress.io)(Test)
 
 ---
 
