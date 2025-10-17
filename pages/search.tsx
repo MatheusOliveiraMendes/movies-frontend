@@ -1,45 +1,49 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import type { GetStaticProps } from 'next';
+import useSWR from 'swr';
 import { fetchMovies } from '../lib/api';
 import { Movie } from '../lib/types';
 
-export default function SearchPage() {
-    const [movies, setMovies] = useState<Movie[]>([]);
-    const [filtered, setFiltered] = useState<Movie[]>([]);
-    const [genres, setGenres] = useState<string[]>([]);
+type SearchPageProps = {
+    initialMovies: Movie[];
+};
+
+const REVALIDATE_SECONDS = 60;
+
+export default function SearchPage({ initialMovies }: SearchPageProps) {
+    const { data: movies = [], error } = useSWR<Movie[]>(
+        'movies',
+        () => fetchMovies(),
+        {
+            fallbackData: initialMovies,
+            revalidateOnFocus: true,
+        }
+    );
     const [selectedGenre, setSelectedGenre] = useState<string>('All');
     const [query, setQuery] = useState('');
 
     const router = useRouter();
 
-    useEffect(() => {
-        fetchMovies().then((data) => {
-            setMovies(data);
-            setFiltered(data);
-            const allGenres = Array.from(
-                new Set(data.flatMap((m) => m.genres as string[]))
-            ).sort();
-            setGenres(['All', ...(allGenres as string[])]);
+    const genres = useMemo(() => {
+        const unique = new Set<string>();
+        movies.forEach((movie) => {
+            movie.genres.forEach((genre) => unique.add(genre));
         });
-    }, []);
+        return ['All', ...Array.from(unique).sort()];
+    }, [movies]);
 
-    useEffect(() => {
-        let results = movies;
+    const filtered = useMemo(() => {
+        return movies.filter((movie) => {
+            const matchesGenre =
+                selectedGenre === 'All' || movie.genres.includes(selectedGenre);
+            const matchesQuery = movie.name
+                .toLowerCase()
+                .includes(query.toLowerCase());
 
-        if (selectedGenre !== 'All') {
-            results = results.filter((movie) =>
-                movie.genres.includes(selectedGenre)
-            );
-        }
-
-        if (query) {
-            results = results.filter((movie) =>
-                movie.name.toLowerCase().includes(query.toLowerCase())
-            );
-        }
-
-        setFiltered(results);
-    }, [query, selectedGenre, movies]);
+            return matchesGenre && matchesQuery;
+        });
+    }, [movies, query, selectedGenre]);
 
     return (
         <main className="min-h-screen bg-gray-950 text-white p-6">
@@ -83,6 +87,12 @@ export default function SearchPage() {
                 ))}
             </div>
 
+            {error && (
+                <p className="text-sm text-red-400 mb-4">
+                    Não foi possível atualizar a lista agora. Exibindo últimos dados.
+                </p>
+            )}
+
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
                 {filtered.map((movie) => (
                     <div
@@ -99,6 +109,29 @@ export default function SearchPage() {
                     </div>
                 ))}
             </div>
+
+            {!filtered.length && (
+                <p className="text-center text-gray-400 mt-8">
+                    Nenhum filme encontrado com os filtros selecionados.
+                </p>
+            )}
         </main>
     );
 }
+
+export const getStaticProps: GetStaticProps<SearchPageProps> = async () => {
+    try {
+        const movies = await fetchMovies();
+
+        return {
+            props: { initialMovies: movies },
+            revalidate: REVALIDATE_SECONDS,
+        };
+    } catch (error) {
+        console.error('Erro ao gerar página de busca estaticamente:', error);
+        return {
+            props: { initialMovies: [] },
+            revalidate: REVALIDATE_SECONDS,
+        };
+    }
+};
