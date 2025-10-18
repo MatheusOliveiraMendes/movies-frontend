@@ -6,7 +6,8 @@ import { Movie } from '../lib/types';
 import HeroBanner from '../components/HeroBanner';
 import MovieCarousel from '../components/MovieCarousel';
 import Header from '../components/Header';
-import LoadingScreen from '../components/LoadingScreen'; 
+import LoadingScreen from '../components/LoadingScreen';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type HomeProps = {
   initialMovies: Movie[];
@@ -15,6 +16,7 @@ type HomeProps = {
 const REVALIDATE_SECONDS = 60;
 
 export default function Home({ initialMovies }: HomeProps) {
+  const { t } = useLanguage();
   const { data: movies = [], error } = useSWR<Movie[]>(
     'movies',
     () => fetchMovies(),
@@ -50,7 +52,7 @@ export default function Home({ initialMovies }: HomeProps) {
     if (error) {
       return (
         <main className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
-          <p>Não foi possível carregar os filmes. Tente novamente em instantes.</p>
+          <p>{t('common.errorMovies')}</p>
         </main>
       );
     }

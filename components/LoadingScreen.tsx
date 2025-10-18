@@ -1,4 +1,8 @@
+import { useLanguage } from '../contexts/LanguageContext';
+
 export default function LoadingScreen() {
+  const { t } = useLanguage();
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black text-white">
       <div className="flex flex-col items-center gap-4">
@@ -20,7 +24,7 @@ export default function LoadingScreen() {
             d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
           />
         </svg>
-        <p className="text-lg">Loading...</p>
+        <p className="text-lg">{t('common.loading')}</p>
       </div>
     </div>
   );
