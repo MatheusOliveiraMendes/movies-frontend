@@ -21,8 +21,8 @@ export default function MovieCarousel({
   };
 
   return (
-    <section className="relative z-20 -mt-24 sm:-mt-28 lg:-mt-32 px-4 pb-20 sm:px-10 lg:px-16">
-      <div className="mb-4 mt-14 flex items-center gap-3">
+    <section className="relative z-20 -mt-40 sm:-mt-48 lg:-mt-52 px-4 pb-12 sm:px-10 lg:px-16">
+      <div className="mb-4 mt-8 flex items-center gap-3">
         <span className="h-6 w-1.5 rounded-full bg-red-600" />
         <h2 className="text-2xl font-semibold tracking-tight">
           {t('carousel.title')}
@@ -50,10 +50,8 @@ export default function MovieCarousel({
         <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-20 bg-gradient-to-r from-gray-950 via-gray-950/90 to-transparent sm:block" />
         <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-20 bg-gradient-to-l from-gray-950 via-gray-950/90 to-transparent sm:block" />
 
-        <div
-          className="scrollbar-hide flex w-full gap-4 overflow-x-auto pb-4 pr-2"
-          ref={scrollRef}
-        >
+        <div className="scrollbar-hide flex w-full overflow-x-auto pb-4 pr-2" ref={scrollRef}>
+          <div className="flex gap-2 sm:gap-3 lg:gap-4">
           {movies.map((movie) => {
             const genresLabel = (movie.genres || [])
               .slice(0, 2)
@@ -110,6 +108,7 @@ export default function MovieCarousel({
               </div>
             );
           })}
+          </div>
         </div>
       </div>
     </section>

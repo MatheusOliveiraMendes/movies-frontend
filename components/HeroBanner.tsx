@@ -65,7 +65,7 @@ export default function HeroBanner({
           {children && Array.isArray(children) && children[0]}
         </div>
 
-        <div className="mt-auto max-w-2xl lg:max-w-3xl space-y-6">
+        <div className="mt-auto max-w-2xl lg:max-w-3xl space-y-6 -translate-y-8 sm:-translate-y-12 lg:-translate-y-16">
           <div className="flex items-center gap-4 text-xs uppercase tracking-[0.3rem] text-gray-300">
             <div className="flex items-center gap-2 text-red-500">
               <span className="flex h-6 w-6 items-center justify-center rounded-sm bg-red-600 font-semibold text-white">
@@ -78,7 +78,7 @@ export default function HeroBanner({
             </span>
           </div>
 
-          <h1 className="text-4xl font-black drop-shadow-md md:text-6xl lg:text-7xl">
+          <h1 className="text-4xl font-black drop-shadow-md md:text-6xl lg:text-4xl">
             {movie.name}
           </h1>
 
