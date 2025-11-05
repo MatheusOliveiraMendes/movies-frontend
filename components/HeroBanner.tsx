@@ -1,7 +1,10 @@
-import { useEffect, useState, ReactNode } from 'react';
+import Image from 'next/image';
+import { useEffect, useMemo, useRef, useState, ReactNode } from 'react';
 import { Movie } from '../lib/types';
 import MovieModal from './MovieModal';
 import { useLanguage } from '../contexts/LanguageContext';
+
+const TMDB_API_KEY = '08e35b932690010e03e30fe284d07672';
 
 export default function HeroBanner({
   movie,
@@ -10,29 +13,66 @@ export default function HeroBanner({
   movie: Movie;
   children?: ReactNode[];
 }) {
-  const [backgroundUrl, setBackgroundUrl] = useState<string | null>(null);
+  const fallbackUrl = useMemo(
+    () => `https://movies-backend-093v.onrender.com/images/${movie.img}`,
+    [movie.img]
+  );
+  const [backgroundUrl, setBackgroundUrl] = useState<string>(fallbackUrl);
+  const backgroundCache = useRef<Map<number, string>>(new Map());
   const [showModal, setShowModal] = useState(false);
   const { t } = useLanguage();
 
   useEffect(() => {
+    const cached = backgroundCache.current.get(movie.id);
+    if (cached) {
+      setBackgroundUrl(cached);
+      return;
+    }
+
+    setBackgroundUrl(fallbackUrl);
+
+    const controller = new AbortController();
+    let isMounted = true;
+
     async function fetchBackground() {
-      const apiKey = '08e35b932690010e03e30fe284d07672';
-      const res = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
-          movie.name
-        )}`
-      );
-      const data = await res.json();
-      if (data.results && data.results.length > 0) {
-        const result = data.results[0];
-        const path = result.backdrop_path || result.poster_path;
+      try {
+        const res = await fetch(
+          `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(
+            movie.name
+          )}`,
+          { signal: controller.signal, cache: 'force-cache' }
+        );
+
+        if (!res.ok) {
+          return;
+        }
+
+        const data = await res.json();
+        const path = data?.results?.[0]?.backdrop_path ?? data?.results?.[0]?.poster_path;
+
         if (path) {
-          setBackgroundUrl(`https://image.tmdb.org/t/p/original${path}`);
+          const optimizedUrl = `https://image.tmdb.org/t/p/original${path}`;
+          backgroundCache.current.set(movie.id, optimizedUrl);
+          if (isMounted) {
+            setBackgroundUrl(optimizedUrl);
+          }
+        } else {
+          backgroundCache.current.set(movie.id, fallbackUrl);
+        }
+      } catch (error) {
+        if ((error as Error).name === 'AbortError') {
+          return;
         }
       }
     }
+
     fetchBackground();
-  }, [movie.name]);
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  }, [fallbackUrl, movie.id, movie.name]);
 
   function renderStars(rate: number) {
     const stars = [];
@@ -52,11 +92,16 @@ export default function HeroBanner({
 
   return (
     <section
-      className="relative min-h-[90vh] bg-cover bg-center text-white overflow-hidden"
-      style={{
-        backgroundImage: `url("${backgroundUrl || `https://movies-backend-093v.onrender.com/images/${movie.img}`}")`,
-      }}
+      className="relative min-h-[90vh] overflow-hidden bg-cover bg-center text-white"
     >
+      <Image
+        src={backgroundUrl}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/10 md:to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-gray-950 via-gray-950/80 to-transparent" />
 
